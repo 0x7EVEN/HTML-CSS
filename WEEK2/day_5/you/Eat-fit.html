@@ -1,0 +1,84 @@
+<!-- You can't use any style tags for any of the html tags and you have to use classes and ids to apply the styles, keep the
+usage of ids to minimal and optimise the usage of classes by using multiple classes -->
+
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>Eat Fit</title>
+		<style type="text/css">
+			.main {
+				color: rgb(235, 18, 162);
+				width: 500px;
+				height: 450px;
+				padding: 75px;
+				margin: auto;
+				background-color: rgb(51, 51, 51);
+			}
+
+			.sub_div {
+				/* */
+				width: 400px;
+				height: 100px;
+				margin: auto;
+				text-align: center;
+				color: white;
+				font-weight: 600;
+			}
+
+			.main>.names {
+				margin: auto;
+				width: 500px;
+				font-size: 30px;
+				font-weight: 600;
+			}
+
+			.sub_title {
+				padding: 0px;
+				width: 100px;
+				height: 10px;
+				font-size: 10px;
+				color: white;
+				font-weight: 600px;
+			}
+
+			.separator {
+				background-color: white;
+				border-radius: 50px;
+				height: 5px;
+				width: 50px;
+				margin: auto;
+			}
+
+			.sign_up {
+				border: 1px solid rgb(51, 51, 51);
+				border-radius: 50px;
+				background-color: rgb(226, 3, 141);
+				width: 500px;
+				height: 50px;
+				margin: auto;
+				color: white;
+				font-weight: 600;
+			}
+
+		</style>
+	</head>
+
+	<body>
+		<div class="main">
+			<div class="sub_div">Today Sun, 26th Apr<br>
+				Schedule - 7:00AM onwards</div>
+			<div class="sub_div names"><span class="names sub_title">Parathe sarathe with</span><br>
+				Chef. Archana Doshi</div>
+			<div class="separator"></div>
+			<div class="sub_div names"><span class="names sub_title">Spices and Immunity with</span><br>
+				Nutrition Expert Mansasa Rajan</div>
+			<div class="separator"></div>
+
+			<div class="sub_div names"><span class="names sub_title">Postman Vegetables with</span><br>
+				Chef. Jason D'Souza</div>
+			<button class="sign_up">SIGN UP NOW</button>
+		</div>
+	</body>
+
+</html>
