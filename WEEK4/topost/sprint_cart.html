@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<style>
+			* {
+				text-align: center;
+			}
+
+			#cartProducts {
+				margin: auto;
+				padding: 10px;
+				display: grid;
+				grid-gap: 40px;
+				grid-template-columns: 30% 30% 30%;
+			}
+
+		</style>
+	</head>
+
+	<body>
+		<div>CART</div>
+		<div>Total:<span id='total'>Calculating...</span></div>
+		<div style="width:60%;margin:auto">
+			<input id='promo' type="text" name='couponCode' placeholder='Apply Special Voucher' />
+			<button onclick="applyPromo()">Apply</button>
+			<button onclick="window.location.href = 'checkout.html'">Go-to-Checkout</button>
+		</div>
+		<div id='cartProducts'>
+
+		</div>
+	</body>
+
+</html>
+<script>
+	var cart = JSON.parse(localStorage.getItem('cart'));
+	let total = 0; let totaldiv = document.getElementById('total');
+	for (let i = 0; i < cart.length; i++) {
+		appendProduct(cart[i]);
+		total += cart[i].price
+		console.log(cart[i].price);
+		totaldiv.innertext = ``;
+	}
+	totaldiv.innerHTML = `${total}`;
+	function appendProduct(el) {
+		// console.log(count)
+		let maindiv = document.getElementById('cartProducts');
+		// created a product div
+		let productDiv = document.createElement('div');
+		productDiv.setAttribute('class', 'productsdiv');// added class productdiv.
+		// productDiv.setAttribute('id', `${count}`)
+		//creating product image
+		let prodcutimage = document.createElement('img');
+		prodcutimage.src = el.img1;
+		//creating product name and price;
+		let productdetails = document.createElement('p');
+		productdetails.innerText = el.name;
+
+
+		let productPrice = document.createElement('p');
+		productPrice.innerText = el.price
+
+		// var addtocart = document.createElement('button');
+		// addtocart.textContent = `Add to Cart`;
+		// addtocart.setAttribute('onclick', `addToCart(${count})`)
+
+
+		let productBrand = document.createElement('p');
+		productBrand.innerText = el.brand;
+		productDiv.append(prodcutimage, productdetails, productPrice, productBrand);
+
+		maindiv.append(productDiv);
+		// count++;
+	}
+	var flag = true;
+	function applyPromo() {
+		if (flag) (alert(`Congrats, Price drop by ${total * 0.3}!`))
+		let promo = document.getElementById('promo').value;
+		if (flag && promo == 'masai30') {
+			totaldiv.innerHTML = total - total * 0.3; flag = false;
+		}
+		if (!flag) {alert('you can use one promo for once')}
+	}
+</script>

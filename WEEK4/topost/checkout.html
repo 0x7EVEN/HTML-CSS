@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+	<head></head>
+
+	<body>
+		<div style="text-align:center;padding:20px">Check-out</div>
+		<div id='main' style="width:80%;margin: auto;">
+			<h3>Add your address</h3>
+			<form id='addform' onsubmit="checkout(event)">
+				City Name : <br><input type="text" name='cityName' placeholder="city name" /><br>
+				SubDistrict: <br><input type="text" name='subDisName' placeholder="Sub-District" /><br>
+				District Name:<br> <input type="text" name='DistName' placeholder="District name" /><br>
+				State Name:<br> <input type="text" name='stateName' placeholder="State name" /><br>
+				Pin-Code :<br> <input type="text" name='pinCode' placeholder="Pin Code" /><br>
+				<input type="submit">
+			</form>
+		</div>
+	</body>
+
+</html>
+<script>
+
+	function checkout(e) {
+		e.preventDefault();
+		let form = document.getElementById('addform');
+		let c = form.cityName.value;
+		let s = form.subDisName.value;
+		let d = form.DistName.value;
+		let ss = form.stateName.value;
+		let p = form.pinCode.value;
+		if (!c || !s || !d || !ss || !p) {
+			alert('Enter Valid details!')
+		} else {
+			window.location.href = 'payment.html'
+		}
+	}
+</script>

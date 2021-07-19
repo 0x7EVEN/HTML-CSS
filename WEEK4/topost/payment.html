@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+	<body>
+		<div id='main' style="width:60%;margin:50px auto;">
+			<form style='margin:auto;width:70%' id='payment-form' onsubmit='checkpay()'>
+				Debit Card Number : <br>
+				<input type='text' name='debitCard' placeholder='Debit Card No.'><br>
+				CVV No. :<br>
+				<input type='text' name='cvv' placeholder='CVV No.'><br>
+				Expiry Date : <br>
+				<input type='text' name='expiryDate' placeholder='Expiry Date'><br>
+				<input type='submit'>
+			</form>
+		</div>
+	</body>
+
+</html>
+<script>
+	function checkpay() {
+		let form = document.getElementById('payment-form');
+		let db = form.debitCard.value;
+		let cvv = form.cvv.value;
+		let ed = form.expiryDate.value;
+		if (!db || !cvv || !ed) {
+			alert('Please enter valid details')
+		} else {
+			let main = document.getElementById('main');
+			main.innerHTML = null;
+			let thanks = document.createElement('h1')
+			thanks.textContent = "Thank you for purchasing !!"
+
+			setTimeout(function() {
+				main.append(thanks);
+			}, 2300)
+		}
+	}
+</script>
