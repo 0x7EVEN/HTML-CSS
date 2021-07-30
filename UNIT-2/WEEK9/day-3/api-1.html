@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet"
+     href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+     <title>Eye-Tube</title>
+     <style>
+          #navbar{
+               width:100%;
+               position:fixed;
+               top:0;
+               background:white;
+               align-items: center;
+          }
+          #inner{
+               width: 90%;
+               height: 56px;
+               display:flex;
+               margin:auto;
+               align-items: center;
+          }
+          #navbar img{
+               width: 120px;
+               height: 56px;
+               margin-right:24%
+          }
+          input{
+               width:20%;
+               height: 40%;
+          }
+          #videoDiv{
+          display: grid;
+          grid-gap: 20px;
+          grid-template-columns: auto auto auto auto;
+          padding: 20px;
+          }
+
+     </style>
+</head>
+<body>
+     <div id="navbar">
+          <div id="inner"><img src="https://images.glaciermedia.ca/polopoly_fs/1.24165272.1593945740!/image/image.jpg_gen/derivatives/landscape_804/yt.jpg">
+                <input type="text" id='inputquery'><button onclick="getApi()"><i class="fa fa-search" style="font-size:22px;padding:0 22px"></i></button>
+          <div style="margin-left:25%;font-size:24px;display:flex;justify-content:space-between;align-items: center;">
+              <div><i class="las la-play"></i></div>
+               <div style="margin-left:25px"><i class="las la-th"></i></div>
+               <div style="margin-left:25px"><i class="lar la-bell"></i></div>
+               <div style="margin-left:25px">
+               <img style='width:40px;height:40px;border-radius: 50%;' src='https://yt3.ggpht.com/yti/APfAmoE7QdVh-koETc0W5R_yjcSQGpBqFeGB-WjxkQ=s88-c-k-c0x00ffffff-no-rj-mo'>
+               </div>
+               </div>
+               </div>
+          <div id='icons' style="border: 1px solid#fff;"></div>
+          <div style="display: flex;" id="sub-icons"><span class="material-icons-outlined">
+               </span>
+          </div>
+
+     </div>
+<div id='heading' style="width:20%;margin: auto;font-family: 'Courier New',sans-serif;margin-top:70px;"><h2 style="margin-left: 35%;">Trending</h2></div>
+<div id="videoDiv">
+
+</div>
+<!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/0IGIr0e1EIg" title="YouTube video player"
+     frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+     allowfullscreen></iframe> -->
+</body>
+</html>
+<script>
+     var i=0;
+
+     fetch('https://www.googleapis.com/youtube/v3/videos?chart=mostPopular&key=AIzaSyBFv_DWK7fbNpjwlksGesL6tROPzaKsPlc&maxResults=16')
+     .then((res) => {
+          res.json().then((data) =>{
+               console.log('data:', data)
+
+             data.items.forEach(element => {
+                    i++;
+                    let maindiv = document.getElementById('videoDiv');
+                    console.log(element.id)
+                    let videoDivInner = document.createElement('div');
+                    videoDivInner.setAttribute('gridArea', `${i}`)
+                    videoDivInner.innerHTML = `<iframe width="340" height="200" src="https://www.youtube.com/embed/${element.id}" title="YouTube video player"
+                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>`
+                    let para = document.createElement('p');
+                    // para.innerHTML =
+                    maindiv.append(videoDivInner)
+               });
+          })
+     }).catch((err) => {
+          console.log(err);
+     });
+
+
+     async function getApi(){
+          let maindiv = document.getElementById('videoDiv');
+          maindiv.innerHTML = ''
+          let header = document.getElementById('heading');
+          header.innerHTML = ''
+          let q = document.getElementById('inputquery').value;
+          if(!q){return}
+          let apiPromise = await fetch(`https://youtube.googleapis.com/youtube/v3/search?q=${q}&key=AIzaSyBFv_DWK7fbNpjwlksGesL6tROPzaKsPlc&maxResults=20`);
+          console.log('apiPromise:', apiPromise)
+          let data = await apiPromise.json();
+          let {items} = data;
+          items = items.filter(el => {
+               return el.id.videoId !== undefined;
+          });
+          items.forEach(element => {
+               i++;
+               let videoDivInner = document.createElement('div');
+               videoDivInner.setAttribute('gridArea',`${i}`)
+               videoDivInner.innerHTML = `<iframe width="340" height="200" src="https://www.youtube.com/embed/${element.id.videoId}" title="YouTube video player"
+               frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+               allowfullscreen></iframe>`
+               maindiv.append(videoDivInner)
+          });
+     }
+</script>
