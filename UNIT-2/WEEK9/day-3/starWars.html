@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <title>Document</title>
+     <link rel="stylesheet"
+          href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+     <style>
+          *{
+               margin: 0;
+               box-sizing: border-box;
+               font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+               align-items: center;
+               font-size: 18px;
+          }
+          ::-webkit-scrollbar {
+               display: none;
+          }
+          #heading{
+               text-align: center;
+               font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+               font-size: 50px;
+               color: #fff;
+               font-weight: 900;
+               width:30%;
+               margin-left:35%
+          }
+          #results{
+               display:  none;
+               width:325px;
+               background-color:#2f2f2f;
+               height:auto;
+               max-height:175px;
+               color:rgb(36, 36, 36);
+               overflow-y: scroll;
+               overflow-x: hidden;
+               padding:0 0 0 25px;
+          }
+          body{
+               background:#2f2f2f
+          }
+          #inputDiv{
+               float: left;
+               padding :30px;
+               margin-left: 200px;
+               margin-top:150px
+          }
+          #character{
+               display:inline-block;
+               width:300px;
+               border: none;
+               margin-left: 25px;
+          }
+          #character:focus{
+               outline: none !important
+          }
+          .res{
+               padding: 5px;
+               text-align: left;
+               z-index: 5;
+               overflow: hidden;
+               background:#686868;
+               width: 100%;
+               font-size :16px;
+               position:absolute;
+          }
+          .res:hover{
+               transform: translate(-25px, -2px);
+               transition: 500ms;
+          }
+          .outeritem{
+               padding:5px 0;
+               position : relative;
+               background:#2f2f2f;
+               color : #fff;
+               font-size :18px;
+               align-items: center;
+               text-align: right;
+          }
+          #herodata{
+               float: left;
+               border:13px solid rgb(145, 145, 145);
+               margin: 150px;
+               margin-left: 200px ;
+               height : 260px;
+               border-top:15px transparent;
+               border-bottom:5px  transparent;
+               width : 400px;
+               padding: 10px;
+               color:white;
+          }
+          #herodata>p{
+               padding:10px;
+          }
+     </style>
+</head>
+<body>
+     <div id="heading">STAR WARS</div>
+<div id="inputDiv">
+     <input oninput='debouncing();' type="text" id="character"/>
+     <div id='results'></div>
+</div>
+<div id="herodata">
+          <p>Name : <span id='Name'>?</span></p>
+          <p>Height : <span id='Height'>?</span></p>
+          <p>Mass : <span id='Mass'>?</span></p>
+          <p>B.Year : <span id='birth_year'>?</span></p>
+          <p>Hairs : <span id='Hairs'>?</span></p>
+          <p>Gender : <span id='Gender'>?</span></p>
+</div>
+</body>
+</html>
+<script>
+     var timer;
+     function debouncing(){
+          if(timer) {return;}
+          timer = setTimeout(()=>{
+               main();
+               timer = undefined;
+          },500);
+     }
+
+     async function main(){
+          let q = document.getElementById('character').value;
+          if(q.length < 1){
+               let resultsDiv = document.getElementById('results');
+               resultsDiv.innerHTML = '';
+               resultsDiv.style.display = 'none'
+               return
+          }
+          let inputvalue = document.getElementById('character').value;
+          if(inputvalue.length < 1){
+               document.getElementById('Name').innerText = '?';
+               document.getElementById('Gender').innerText =  '?';
+               document.getElementById('Height').innerText = '?';
+               document.getElementById('Mass').innerText =  '?';
+               document.getElementById('Hairs').innerText =  '?';
+               document.getElementById('birth_year').innerText =  '?';
+          }
+          let data = await fetch(`https://swapi.dev/api/people/?search=${q}`)
+          let characters = await data.json();
+          console.log('characters:', characters)
+          let {results} = characters;
+          appendresult(results);
+          var mainArr = results.slice();
+     }
+     function appendresult (arr){
+          let resultsDiv = document.getElementById('results');
+          resultsDiv.innerHTML= '';
+          resultsDiv.style.display = 'block'
+          arr.forEach((el,i)=>{
+               let outeritem = document.createElement('div');
+               outeritem.setAttribute('class','outeritem');
+               let item = document.createElement('div');
+               let {name:n,gender:g,hair_color:h,height:hh,mass:m, birth_year:b} = el;
+               item.setAttribute('id',i)
+               item.setAttribute('class','res')
+               let p = document.createElement('p');
+               p.innerText = el.name;
+               item.append(p);
+               item.addEventListener('mouseover', function() {
+                    changetxt(`${i}`);
+               })
+               item.addEventListener('click', function() {
+                    showdata(n, g, h, m, hh, b)
+               })
+               outeritem.append(item)
+               let icon = document.createElement('i');
+               if(el.gender == 'male'){
+                    icon.innerHTML = `<i style="font-size:24px" class="las la-male"></i>`
+               }else {
+                    icon.innerHTML = `<i style="font-size:24px" class="las la-female"></i>`
+               }
+               outeritem.append(icon)
+               resultsDiv.appendChild(outeritem);
+          })
+     }
+     function changetxt(i){
+          let thiselement = document.getElementById(`${i}`);
+          let inputvalue = document.getElementById('character');
+          inputvalue.value = thiselement.innerText;
+     }
+     function showdata(n,g,h,m,hh,b){
+          document.getElementById('Name').innerText = n;
+          document.getElementById('Gender').innerText = g;
+          document.getElementById('Height').innerText = h;
+          document.getElementById('Mass').innerText = m;
+          document.getElementById('Hairs').innerText = hh;
+          document.getElementById('birth_year').innerText = b;
+     }
+</script>
