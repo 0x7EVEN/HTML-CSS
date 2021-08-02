@@ -151,7 +151,7 @@
                let outeritem = document.createElement('div');
                outeritem.setAttribute('class','outeritem');
                let item = document.createElement('div');
-               let {name:n,gender:g,hair_color:h,mass:m, height: hh,birth_year:b} = el;
+               let {name:n,gender:g,hair_color:h,height:hh,mass:m, birth_year:b} = el;
                item.setAttribute('id',i)
                item.setAttribute('class','res')
                let p = document.createElement('p');
@@ -179,12 +179,12 @@
           let inputvalue = document.getElementById('character');
           inputvalue.value = thiselement.innerText;
      }
-     function showdata(n, g, h, m, hh, b){
+     function showdata(n,g,h,m,hh,b){
           document.getElementById('Name').innerText = n;
           document.getElementById('Gender').innerText = g;
-          document.getElementById('Height').innerText = hh;
+          document.getElementById('Height').innerText = h;
           document.getElementById('Mass').innerText = m;
-          document.getElementById('Hairs').innerText = h;
+          document.getElementById('Hairs').innerText = hh;
           document.getElementById('birth_year').innerText = b;
      }
 </script>
