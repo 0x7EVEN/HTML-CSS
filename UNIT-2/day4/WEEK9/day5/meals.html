@@ -1,0 +1,198 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Random Meals</title>
+		<style>
+			* {
+				margin: 0;
+				box-sizing: border-box;
+			}
+			#navbar {
+				border: 1px solid #c2c2c2;
+				display: flex;
+				padding: 20px 50px;
+				width: 90%;
+				margin: 40px auto;
+				justify-content: space-between;
+				font-size: 18px;
+				text-align: center;
+			}
+			#options {
+				width: 20%;
+				display: flex;
+				justify-content: space-between;
+			}
+			#inputDiv {
+				width: 60%;
+				margin: auto;
+				display: flex;
+				justify-content: center;
+				position: relative;
+			}
+			#inputDiv input {
+				padding: 10px 50px;
+				margin-right: 30px;
+			}
+			#inputDiv button {
+				padding: 10px 50px;
+				font-size: 20px;
+				color: white;
+				background: #000;
+			}
+			#outer-products {
+				width: 80%;
+				margin: 50px auto;
+				display: flex;
+				justify-content: space-between;
+				text-align: center;
+				flex-wrap: wrap;
+			}
+			.recipies h4 {
+				font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+				padding: 10px 20px;
+				text-decoration: italic !important;
+			}
+			.recipies {
+				border: 1px solid rgb(114, 114, 114);
+				padding: 0 20px;
+				margin: 20px;
+				max-width: 200px;
+			}
+			.recipies img {
+				width: 150px;
+				height: 150px;
+				border-radius: 5px;
+				margin-top: 10px;
+			}
+			.recipies div {
+				border-bottom: 1px solid #000;
+				color: rgb(110, 110, 110);
+			}
+			.recipies p + p {
+				margin: 15px 0;
+				font-size: 16px;
+				font-weight: 550;
+				font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+				color: rgb(39, 39, 39);
+			}
+			.recipies p {
+				font-size: 12px;
+				color: rgb(110, 110, 110);
+				text-align: left;
+			}
+			#results {
+				position: absolute;
+				top: 49px;
+				display: flex;
+				flex-direction: column;
+				width: 260px;
+				max-height: 200px;
+				overflow-y: scroll;
+				left: 25%;
+				padding: 5px 50px;
+				font-size: 16px;
+				font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+				background: white;
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="headerDiv"></div>
+		<div id="inputDiv">
+			<input
+				oninput="throttle()"
+				type="text"
+				id="mealssearch"
+				placeholder="search recipies by name"
+			/>
+			<div id="results"></div>
+			<button id="buttonsearch" onclick="search()">Search</button>
+		</div>
+		<div id="outer-products"></div>
+	</body>
+</html>
+<script type="text/javascript">
+	async function search() {
+		results.style.display = 'none';
+		let outerDiv = document.getElementById('outer-products');
+		outerDiv.innerHTML = null;
+		let q = document.getElementById('mealssearch').value;
+		let stream = await fetch(
+			`https://www.themealdb.com/api/json/v1/1/search.php?s=${q}`
+		);
+		let data = await stream.json();
+		data.meals.forEach((el) => {
+			appendrecipies(el);
+		});
+	}
+	function appendrecipies(el) {
+		let div = document.createElement('div');
+		div.setAttribute('class', 'recipies');
+
+		let innerDiv = document.createElement('div');
+		let h4 = document.createElement('h4');
+		h4.innerText = el.strArea;
+		innerDiv.append(h4);
+
+		let img = document.createElement('img');
+		img.src = el.strMealThumb;
+		let tags = document.createElement('p');
+		if (el.strTags) {
+			tags.innerText = `#${el.strTags}`;
+		} else {
+			tags.innerText = '#notag';
+		}
+
+		let name = document.createElement('p');
+		name.innerText = el.strMeal;
+
+		div.append(innerDiv, img, tags, name);
+		let outerDiv = document.getElementById('outer-products');
+		outerDiv.append(div);
+	}
+	var timer;
+	function throttle() {
+		results.style.display = 'flex';
+		if (timer) {
+			return;
+		}
+		timer = setTimeout(() => {
+			main();
+			timer = null;
+		}, 1000);
+	}
+	var results = document.getElementById('results');
+	async function main() {
+		let q = document.getElementById('mealssearch').value;
+		if (q.length <= 0) {
+			results.style.display = 'none';
+		}
+		results.innerHTML = null;
+		let stream = await fetch(
+			`https://www.themealdb.com/api/json/v1/1/search.php?s=${q}`
+		);
+		let data = await stream.json();
+		data.meals.forEach((el) => {
+			let div = document.createElement('div');
+			div.innerText = el.strMeal;
+			div.addEventListener('click', () => {
+				setInput(el.strMeal);
+			});
+			results.append(div);
+		});
+	}
+	function setInput(a) {
+		let input = document.getElementById('mealssearch');
+		input.value = a;
+	}
+</script>
+<script type="module">
+	import { navbar } from './mealScript.js';
+	document.getElementById('headerDiv').innerHTML = navbar();
+</script>

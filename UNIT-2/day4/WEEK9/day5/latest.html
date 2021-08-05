@@ -1,0 +1,38 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Latest</title>
+		<style>
+			* {
+				margin: 0;
+				box-sizing: border-box;
+			}
+			#navbar {
+				border: 1px solid #c2c2c2;
+				display: flex;
+				padding: 20px 50px;
+				width: 90%;
+				margin: 40px auto;
+				justify-content: space-between;
+				font-size: 18px;
+				text-align: center;
+			}
+			#options {
+				width: 20%;
+				display: flex;
+				justify-content: space-between;
+			}
+		</style>
+	</head>
+	<body></body>
+</html>
+
+<script type="module">
+	import { navbar } from './mealScript.js';
+	document.body.innerHTML = navbar();
+</script>
