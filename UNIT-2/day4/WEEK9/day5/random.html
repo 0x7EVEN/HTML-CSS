@@ -11,6 +11,8 @@
 			* {
 				margin: 0;
 				box-sizing: border-box;
+				font-family: Arial, Helvetica, sans-serif;
+				/* text-align: center; */
 			}
 			#navbar {
 				border: 1px solid #c2c2c2;
@@ -27,12 +29,165 @@
 				display: flex;
 				justify-content: space-between;
 			}
+			#main-recipe {
+				width: 60%;
+				margin: 30px auto;
+				text-align: center;
+				border: 1px solid #000;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+			}
+			#title {
+				text-align: center;
+				/* border: 1px solid #000; */
+				width: 50%;
+				margin: auto;
+				font-size: 32px;
+			}
+			#main-recipe img {
+				width: 100%;
+				object-fit: cover;
+			}
+			#main-inner {
+				text-align: left;
+				display: flex;
+				flex-direction: row;
+				padding: 20px;
+			}
+			#main-inner div {
+				width: 50%;
+				margin: 10px;
+			}
+			#main-inner div + div {
+				padding: 20px;
+			}
+			#descrition p {
+				margin: 10px 0;
+			}
 		</style>
 	</head>
-	<body></body>
+	<body>
+		<div id="headerDiv"></div>
+		<div id="main-recipe">
+			<div id="title"><p id="main-title"></p></div>
+			<div id="main-inner">
+				<hr />
+				<div>
+					<img
+						id="main-img"
+						src="https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg"
+						alt=""
+					/>
+				</div>
+				<hr />
+				<div id="descrition">
+					<p>Meal ID : <span id="main-inner-name"></span></p>
+					<hr />
+					<p>Category : <span id="main-inner-category"></span></p>
+					<hr />
+					<p>Region/Area : <span id="main-inner-region"></span></p>
+					<hr />
+					<p>Ingradients : <span id="main-inner-ingradients"></span></p>
+					<hr />
+					<p><a id="link-to-video" href="#">Link to Video</a></p>
+				</div>
+			</div>
+		</div>
+	</body>
 </html>
-
+<script></script>
 <script type="module">
 	import { navbar, search } from './mealScript.js';
-	document.body.innerHTML = navbar();
+	document.getElementById('headerDiv').innerHTML = navbar();
+	search('https://www.themealdb.com/api/json/v1/1/random.php').then(
+		({ meals }) => {
+			let [recipe] = meals;
+			let banner = document.getElementById('main-title');
+			banner.innerText = recipe.strMeal;
+
+			let img = document.getElementById('main-img');
+			img.src = recipe.strMealThumb;
+			let name = document.getElementById('main-inner-name');
+			name.innerText = recipe.idMeal;
+
+			let category = document.getElementById('main-inner-category');
+			category.innerText = recipe.strCategory;
+
+			let region = document.getElementById('main-inner-region');
+			region.innerText = recipe.strArea;
+
+			let ingradients = document.getElementById('main-inner-ingradients');
+			ingradients.innerText = `${recipe.strIngredient1}(${recipe.strMeasure1}),
+			${recipe.strIngredient2}(${recipe.strMeasure2}),
+			${recipe.strIngredient3}(${recipe.strMeasure3}),
+			${recipe.strIngredient4}(${recipe.strMeasure4}),
+			${recipe.strIngredient5}(${recipe.strMeasure5}),
+			${recipe.strIngredient6}(${recipe.strMeasure6}),
+			${recipe.strIngredient7}(${recipe.strMeasure7}),
+			${recipe.strIngredient8}(${recipe.strMeasure8})`;
+
+			let link = document.getElementById('link-to-video');
+			link.href = recipe.strYoutube;
+		}
+	);
 </script>
+<!-- {
+    "meals": [
+        {
+            "idMeal": "53049",
+            "strMeal": "Apam balik",
+            "strDrinkAlternate": null,
+            "strCategory": "Dessert",
+            "strArea": "Malaysian",
+            "strInstructions": "Mix milk, oil and egg together. Sift flour, baking powder and salt into the mixture. Stir well until all ingredients are combined evenly.\r\n\r\nSpread some batter onto the pan. Spread a thin layer of batter to the side of the pan. Cover the pan for 30-60 seconds until small air bubbles appear.\r\n\r\nAdd butter, cream corn, crushed peanuts and sugar onto the pancake. Fold the pancake into half once the bottom surface is browned.\r\n\r\nCut into wedges and best eaten when it is warm.",
+            "strMealThumb": "https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg",
+            "strTags": null,
+            "strYoutube": "https://www.youtube.com/watch?v=6R8ffRRJcrg",
+            "strIngredient1": "Milk",
+            "strIngredient2": "Oil",
+            "strIngredient3": "Eggs",
+            "strIngredient4": "Flour",
+            "strIngredient5": "Baking Powder",
+            "strIngredient6": "Salt",
+            "strIngredient7": "Unsalted Butter",
+            "strIngredient8": "Sugar",
+            "strIngredient9": "Peanut Butter",
+            "strIngredient10": "",
+            "strIngredient11": "",
+            "strIngredient12": "",
+            "strIngredient13": "",
+            "strIngredient14": "",
+            "strIngredient15": "",
+            "strIngredient16": "",
+            "strIngredient17": "",
+            "strIngredient18": "",
+            "strIngredient19": "",
+            "strIngredient20": "",
+            "strMeasure1": "200ml",
+            "strMeasure2": "60ml",
+            "strMeasure3": "2",
+            "strMeasure4": "1600g",
+            "strMeasure5": "3 tsp",
+            "strMeasure6": "1/2 tsp",
+            "strMeasure7": "25g",
+            "strMeasure8": "45g",
+            "strMeasure9": "3 tbs",
+            "strMeasure10": " ",
+            "strMeasure11": " ",
+            "strMeasure12": " ",
+            "strMeasure13": " ",
+            "strMeasure14": " ",
+            "strMeasure15": " ",
+            "strMeasure16": " ",
+            "strMeasure17": " ",
+            "strMeasure18": " ",
+            "strMeasure19": " ",
+            "strMeasure20": " ",
+            "strSource": "https://www.nyonyacooking.com/recipes/apam-balik~SJ5WuvsDf9WQ",
+            "strImageSource": null,
+            "strCreativeCommonsConfirmed": null,
+            "dateModified": null
+        }
+    ]
+} -->
